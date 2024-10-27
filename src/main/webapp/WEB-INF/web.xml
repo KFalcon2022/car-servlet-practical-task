@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app
+        xmlns = "https://jakarta.ee/xml/ns/jakartaee"
+        xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation = "https://jakarta.ee/xml/ns/jakartaee
+        https://jakarta.ee/xml/ns/jakartaee/web-app_6_1.xsd"
+        version = "6.1">
+
+    <listener>
+        <listener-class>com.walking.carpractice.listener.AddAttributesContextListener</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>com.walking.carpractice.listener.DataBaseMigrationContextListener</listener-class>
+    </listener>
+
+    <servlet>
+        <servlet-name>CarServlet</servlet-name>
+        <servlet-class>com.walking.carpractice.servlet.CarServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>CarServlet</servlet-name>
+        <url-pattern>/car</url-pattern>
+    </servlet-mapping>
+</web-app>
