@@ -1,13 +1,13 @@
 package com.walking.carpractice.servlet;
 
 import com.walking.carpractice.constant.ContextAttributeNames;
-import com.walking.carpractice.converter.dto.CarDtoConverter;
-import com.walking.carpractice.converter.dto.request.CreateCarRequestConverter;
-import com.walking.carpractice.converter.dto.request.UpdateCarRequestConverter;
+import com.walking.carpractice.converter.dto.car.CarDtoConverter;
+import com.walking.carpractice.converter.dto.car.request.CreateCarRequestConverter;
+import com.walking.carpractice.converter.dto.car.request.UpdateCarRequestConverter;
 import com.walking.carpractice.filter.RequestJsonDeserializerFilter;
 import com.walking.carpractice.filter.ResponseJsonSerializerFilter;
-import com.walking.carpractice.model.request.CreateCarRequest;
-import com.walking.carpractice.model.request.UpdateCarRequest;
+import com.walking.carpractice.model.car.request.CreateCarRequest;
+import com.walking.carpractice.model.car.request.UpdateCarRequest;
 import com.walking.carpractice.service.CarService;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.http.HttpServlet;

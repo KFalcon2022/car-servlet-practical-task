@@ -1,0 +1,22 @@
+### Зарегистрироваться
+POST http://localhost:8080/car/signUp
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "firstName": "Ivan",
+  "secondName": "Ivanov",
+  "password": "Qwerty"
+}
+
+### Авторизоваться
+POST http://localhost:8080/car/auth
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "Qwerty"
+}
+
+### Выйти из системы
+DELETE http://localhost:8080/car/auth
