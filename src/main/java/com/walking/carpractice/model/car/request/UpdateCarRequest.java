@@ -1,4 +1,4 @@
-package com.walking.carpractice.model.request;
+package com.walking.carpractice.model.car.request;
 
 // Для DTO использование наследования является спорным подходом. Поэтому могут возникать ситуации, как здесь,
 // когда несколько классов практически полностью дублируют друг друга

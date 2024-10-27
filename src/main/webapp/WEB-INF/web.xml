@@ -14,6 +14,10 @@
     </listener>
 
     <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>com.walking.carpractice.filter.AuthFilter</filter-class>
+    </filter>
+    <filter>
         <filter-name>RequestJsonDeserializerFilter</filter-name>
         <filter-class>com.walking.carpractice.filter.RequestJsonDeserializerFilter</filter-class>
     </filter>
@@ -22,6 +26,10 @@
         <filter-class>com.walking.carpractice.filter.ResponseJsonSerializerFilter</filter-class>
     </filter>
 
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
     <filter-mapping>
         <filter-name>RequestJsonDeserializerFilter</filter-name>
         <url-pattern>/*</url-pattern>
@@ -35,9 +43,25 @@
         <servlet-name>CarServlet</servlet-name>
         <servlet-class>com.walking.carpractice.servlet.CarServlet</servlet-class>
     </servlet>
-
+    <servlet>
+        <servlet-name>SignUpServlet</servlet-name>
+        <servlet-class>com.walking.carpractice.servlet.SignUpServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AuthServlet</servlet-name>
+        <servlet-class>com.walking.carpractice.servlet.AuthServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>CarServlet</servlet-name>
         <url-pattern>/car</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>SignUpServlet</servlet-name>
+        <url-pattern>/signUp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AuthServlet</servlet-name>
+        <url-pattern>/auth</url-pattern>
     </servlet-mapping>
 </web-app>

@@ -3,12 +3,18 @@ package com.walking.carpractice.listener;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.walking.carpractice.constant.ContextAttributeNames;
 import com.walking.carpractice.converter.db.CarConverter;
-import com.walking.carpractice.converter.dto.CarDtoConverter;
-import com.walking.carpractice.converter.dto.request.CreateCarRequestConverter;
-import com.walking.carpractice.converter.dto.request.UpdateCarRequestConverter;
+import com.walking.carpractice.converter.db.UserConverter;
+import com.walking.carpractice.converter.dto.car.CarDtoConverter;
+import com.walking.carpractice.converter.dto.car.request.CreateCarRequestConverter;
+import com.walking.carpractice.converter.dto.user.UserDtoConverter;
+import com.walking.carpractice.converter.dto.user.request.CreateUserRequestConverter;
+import com.walking.carpractice.converter.dto.car.request.UpdateCarRequestConverter;
 import com.walking.carpractice.repository.CarRepository;
+import com.walking.carpractice.repository.UserRepository;
 import com.walking.carpractice.service.CarService;
+import com.walking.carpractice.service.EncodingService;
 import com.walking.carpractice.service.MigrationService;
+import com.walking.carpractice.service.UserService;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.servlet.ServletContext;
@@ -38,8 +44,14 @@ public class AddAttributesContextListener implements ServletContextListener {
         var carConverter = new CarConverter();
         servletContext.setAttribute(ContextAttributeNames.CAR_CONVERTER, carConverter);
 
+        var userConverter = new UserConverter();
+        servletContext.setAttribute(ContextAttributeNames.USER_CONVERTER, userConverter);
+
         var carDtoConverter = new CarDtoConverter();
         servletContext.setAttribute(ContextAttributeNames.CAR_DTO_CONVERTER, carDtoConverter);
+
+        var userDtoConverter = new UserDtoConverter();
+        servletContext.setAttribute(ContextAttributeNames.USER_DTO_CONVERTER, userDtoConverter);
 
         var createCarRequestConverter = new CreateCarRequestConverter();
         servletContext.setAttribute(ContextAttributeNames.CREATE_CAR_REQUEST_CONVERTER, createCarRequestConverter);
@@ -47,11 +59,23 @@ public class AddAttributesContextListener implements ServletContextListener {
         var updateCarRequestConverter = new UpdateCarRequestConverter();
         servletContext.setAttribute(ContextAttributeNames.UPDATE_CAR_REQUEST_CONVERTER, updateCarRequestConverter);
 
+        var createUserRequestConverter = new CreateUserRequestConverter();
+        servletContext.setAttribute(ContextAttributeNames.CREATE_USER_REQUEST_CONVERTER, createUserRequestConverter);
+
         var carRepository = new CarRepository(dataSource, carConverter);
         servletContext.setAttribute(ContextAttributeNames.CAR_REPOSITORY, carRepository);
 
+        var userRepository = new UserRepository(dataSource, userConverter);
+        servletContext.setAttribute(ContextAttributeNames.USER_REPOSITORY, userRepository);
+
         var carService = new CarService(carRepository);
         servletContext.setAttribute(ContextAttributeNames.CAR_SERVICE, carService);
+
+        var encodingService = new EncodingService();
+        servletContext.setAttribute(ContextAttributeNames.ENCODING_SERVICE, encodingService);
+
+        var userService = new UserService(encodingService, userRepository);
+        servletContext.setAttribute(ContextAttributeNames.USER_SERVICE, userService);
 
         var migrationService = new MigrationService(dataSource);
         servletContext.setAttribute(ContextAttributeNames.MIGRATION_SERVICE, migrationService);

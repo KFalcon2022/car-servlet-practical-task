@@ -1,8 +1,8 @@
-package com.walking.carpractice.converter.dto.request;
+package com.walking.carpractice.converter.dto.car.request;
 
 import com.walking.carpractice.converter.Converter;
 import com.walking.carpractice.domain.Car;
-import com.walking.carpractice.model.request.UpdateCarRequest;
+import com.walking.carpractice.model.car.request.UpdateCarRequest;
 
 public class UpdateCarRequestConverter implements Converter<UpdateCarRequest, Car> {
     @Override
