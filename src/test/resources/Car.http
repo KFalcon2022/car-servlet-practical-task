@@ -1,0 +1,28 @@
+### Получить машину по id
+GET http://localhost:8080/car/car?id=1
+
+### Создать машину
+POST http://localhost:8080/car/car
+Content-Type: application/json
+
+{
+  "number": "RR-111-RR",
+  "year": 2015,
+  "color": "yellow",
+  "actualTechnicalInspection": true
+}
+
+### Обновить машину
+PUT http://localhost:8080/car/car
+Content-Type: application/json
+
+{
+  "id": 1,
+  "number": "RR-111-RR",
+  "year": 2015,
+  "color": "green",
+  "actualTechnicalInspection": false
+}
+
+### Удалить машину по id
+DELETE http://localhost:8080/car/car?id=1
