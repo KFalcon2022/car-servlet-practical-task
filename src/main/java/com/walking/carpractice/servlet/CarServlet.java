@@ -1,11 +1,11 @@
 package com.walking.carpractice.servlet;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.walking.carpractice.constant.ContextAttributeNames;
 import com.walking.carpractice.converter.dto.CarDtoConverter;
 import com.walking.carpractice.converter.dto.request.CreateCarRequestConverter;
 import com.walking.carpractice.converter.dto.request.UpdateCarRequestConverter;
-import com.walking.carpractice.model.CarDto;
+import com.walking.carpractice.filter.RequestJsonDeserializerFilter;
+import com.walking.carpractice.filter.ResponseJsonSerializerFilter;
 import com.walking.carpractice.model.request.CreateCarRequest;
 import com.walking.carpractice.model.request.UpdateCarRequest;
 import com.walking.carpractice.service.CarService;
@@ -13,16 +13,8 @@ import jakarta.servlet.ServletConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.io.IOException;
 
 public class CarServlet extends HttpServlet {
-    private static final Logger log = LogManager.getLogger(CarServlet.class);
-
-    private ObjectMapper objectMapper;
-
     private CarService carService;
 
     private CarDtoConverter carDtoConverter;
@@ -33,7 +25,6 @@ public class CarServlet extends HttpServlet {
     public void init(ServletConfig config) {
         var servletContext = config.getServletContext();
 
-        this.objectMapper = (ObjectMapper) servletContext.getAttribute(ContextAttributeNames.OBJECT_MAPPER);
         this.carService = (CarService) servletContext.getAttribute(ContextAttributeNames.CAR_SERVICE);
         this.carDtoConverter = (CarDtoConverter) servletContext.getAttribute(ContextAttributeNames.CAR_DTO_CONVERTER);
 
@@ -48,27 +39,27 @@ public class CarServlet extends HttpServlet {
      * Используется для получения машины по id. Идентификатор передается параметром запроса с именем "id".
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         var id = Long.valueOf(request.getParameter("id"));
 
         var car = carService.getById(id);
         var carDto = carDtoConverter.convert(car);
 
-        writeResponseBody(carDto, response);
+        request.setAttribute(ResponseJsonSerializerFilter.POJO_RESPONSE_BODY, carDto);
     }
 
     /**
      * Используется для создания машины. Данные передаются в теле запроса.
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        var carRequest = getRequest(request, CreateCarRequest.class);
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+        var carRequest = (CreateCarRequest) request.getAttribute(RequestJsonDeserializerFilter.POJO_REQUEST_BODY);
         var car = createCarRequestConverter.convert(carRequest);
 
         var createdCar = carService.create(car);
         var carDto = carDtoConverter.convert(createdCar);
 
-        writeResponseBody(carDto, response);
+        request.setAttribute(ResponseJsonSerializerFilter.POJO_RESPONSE_BODY, carDto);
     }
 
     /**
@@ -76,14 +67,14 @@ public class CarServlet extends HttpServlet {
      * машины. Включая неизмененные поля.
      */
     @Override
-    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        var carRequest = getRequest(request, UpdateCarRequest.class);
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) {
+        var carRequest = (UpdateCarRequest) request.getAttribute(RequestJsonDeserializerFilter.POJO_REQUEST_BODY);
         var car = updateCarRequestConverter.convert(carRequest);
 
         var createdCar = carService.update(car);
         var carDto = carDtoConverter.convert(createdCar);
 
-        writeResponseBody(carDto, response);
+        request.setAttribute(ResponseJsonSerializerFilter.POJO_RESPONSE_BODY, carDto);
     }
 
     /**
@@ -94,26 +85,5 @@ public class CarServlet extends HttpServlet {
         var id = Long.valueOf(request.getParameter("id"));
 
         carService.delete(id);
-    }
-
-    private <T> T getRequest(HttpServletRequest request, Class<T> clazz) throws IOException {
-        try {
-            return objectMapper.readValue(request.getInputStream(), clazz);
-        } catch (IOException e) {
-            log.error("Ошибка десериализации тела запроса", e);
-            throw e;
-        }
-    }
-
-    private void writeResponseBody(CarDto carDto, HttpServletResponse response) throws IOException {
-        try {
-            response.getOutputStream()
-                    .write(objectMapper.writeValueAsBytes(carDto));
-
-            response.setContentType("application/json");
-        } catch (IOException e) {
-            log.error("Ошибка формирования тела ответа", e);
-            throw e;
-        }
     }
 }
