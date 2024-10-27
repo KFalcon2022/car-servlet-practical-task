@@ -1,4 +1,4 @@
-package com.walking.carpractice.model;
+package com.walking.carpractice.model.car;
 
 // Реализация паттерна DTO. На данной сущности его необходимость не очевидна,
 // но в следующих подзадачах станет более прозрачна

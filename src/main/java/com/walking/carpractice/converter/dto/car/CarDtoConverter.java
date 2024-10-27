@@ -1,8 +1,8 @@
-package com.walking.carpractice.converter.dto;
+package com.walking.carpractice.converter.dto.car;
 
 import com.walking.carpractice.converter.Converter;
 import com.walking.carpractice.domain.Car;
-import com.walking.carpractice.model.CarDto;
+import com.walking.carpractice.model.car.CarDto;
 
 public class CarDtoConverter implements Converter<Car, CarDto> {
     @Override

@@ -3,8 +3,10 @@ package com.walking.carpractice.filter;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.walking.carpractice.constant.ContextAttributeNames;
-import com.walking.carpractice.model.request.CreateCarRequest;
-import com.walking.carpractice.model.request.UpdateCarRequest;
+import com.walking.carpractice.model.user.request.CreateUserRequest;
+import com.walking.carpractice.model.user.request.LoginRequest;
+import com.walking.carpractice.model.car.request.CreateCarRequest;
+import com.walking.carpractice.model.car.request.UpdateCarRequest;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpFilter;
@@ -71,5 +73,7 @@ public class RequestJsonDeserializerFilter extends HttpFilter {
 
         targetTypes.put("/car&&POST", new TypeReference<CreateCarRequest>() {});
         targetTypes.put("/car&&PUT", new TypeReference<UpdateCarRequest>() {});
+        targetTypes.put("/auth&&POST", new TypeReference<LoginRequest>() {});
+        targetTypes.put("/signUp&&POST", new TypeReference<CreateUserRequest>() {});
     }
 }
