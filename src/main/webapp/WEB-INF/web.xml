@@ -51,11 +51,15 @@
         <servlet-name>AuthServlet</servlet-name>
         <servlet-class>com.walking.carpractice.servlet.AuthServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoginJSP</servlet-name>
+        <jsp-file>/login.jsp</jsp-file>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>CarServlet</servlet-name>
         <url-pattern>/car</url-pattern>
     </servlet-mapping>
-
     <servlet-mapping>
         <servlet-name>SignUpServlet</servlet-name>
         <url-pattern>/signUp</url-pattern>
@@ -63,5 +67,9 @@
     <servlet-mapping>
         <servlet-name>AuthServlet</servlet-name>
         <url-pattern>/auth</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginJSP</servlet-name>
+        <url-pattern>/login</url-pattern>
     </servlet-mapping>
 </web-app>

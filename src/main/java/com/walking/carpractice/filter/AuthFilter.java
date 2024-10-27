@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class AuthFilter extends HttpFilter {
     private static final Set<String> UNSECURED_API = Set.of(
-            "/signUp", "/auth"
+            "/signUp", "/auth", "/login"
     );
 
     @Override
@@ -24,8 +24,11 @@ public class AuthFilter extends HttpFilter {
 
         var session = request.getSession(false);
 
-        if (session == null) {
-            response.sendError(401);
+//        Опираться только на наличие сессии на самом деле опасно. Сессия может быть создана неявно.
+//        Например, JSP-страницей. При этом атрибутов сессии, характерных для нашей логики аутентификации, в такой
+//        сессии, очевидно, не будет
+        if (session == null || session.getAttribute("userId") == null) {
+            response.sendRedirect("./login");
             return;
         }
 
