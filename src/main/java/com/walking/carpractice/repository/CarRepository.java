@@ -2,6 +2,7 @@ package com.walking.carpractice.repository;
 
 import com.walking.carpractice.converter.db.CarConverter;
 import com.walking.carpractice.domain.Car;
+import com.walking.carpractice.exception.DataAccessException;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -23,7 +24,7 @@ public class CarRepository {
         try (Connection connection = datasource.getConnection()) {
             return findById(id, connection);
         } catch (SQLException e) {
-            throw new RuntimeException("Ошибка при получении машины", e);
+            throw new DataAccessException("Ошибка при получении машины", e);
         }
     }
 
@@ -37,7 +38,7 @@ public class CarRepository {
 
             return converter.convert(result);
         } catch (SQLException e) {
-            throw new RuntimeException("Ошибка при получении машины", e);
+            throw new DataAccessException("Ошибка при получении машины", e);
         }
     }
 
@@ -45,7 +46,7 @@ public class CarRepository {
         try (Connection connection = datasource.getConnection()) {
             return create(car, connection);
         } catch (SQLException e) {
-            throw new RuntimeException("Ошибка при создании машины", e);
+            throw new DataAccessException("Ошибка при создании машины", e);
         }
     }
 
@@ -66,7 +67,7 @@ public class CarRepository {
 
             return car;
         } catch (SQLException e) {
-            throw new RuntimeException("Ошибка при создании машины", e);
+            throw new DataAccessException("Ошибка при создании машины", e);
         }
     }
 
@@ -74,7 +75,7 @@ public class CarRepository {
         try (Connection connection = datasource.getConnection()) {
             return update(car, connection);
         } catch (SQLException e) {
-            throw new RuntimeException("Ошибка при создании машины", e);
+            throw new DataAccessException("Ошибка при создании машины", e);
         }
     }
 
@@ -95,7 +96,7 @@ public class CarRepository {
 
             return car;
         } catch (SQLException e) {
-            throw new RuntimeException("Ошибка при обновлении машины", e);
+            throw new DataAccessException("Ошибка при обновлении машины", e);
         }
     }
 
@@ -108,7 +109,7 @@ public class CarRepository {
             statement.setLong(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException("Ошибка при удалении машины", e);
+            throw new DataAccessException("Ошибка при удалении машины", e);
         }
     }
 

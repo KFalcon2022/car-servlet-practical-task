@@ -3,7 +3,6 @@ package com.walking.carpractice.servlet;
 import com.walking.carpractice.constant.ContextAttributeNames;
 import com.walking.carpractice.converter.dto.user.UserDtoConverter;
 import com.walking.carpractice.converter.dto.user.request.CreateUserRequestConverter;
-import com.walking.carpractice.exception.DuplicateUserException;
 import com.walking.carpractice.filter.RequestJsonDeserializerFilter;
 import com.walking.carpractice.filter.ResponseJsonSerializerFilter;
 import com.walking.carpractice.model.user.request.CreateUserRequest;
@@ -12,8 +11,6 @@ import jakarta.servlet.ServletConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import java.util.Map;
 
 public class SignUpServlet extends HttpServlet {
     private UserService userService;
@@ -44,21 +41,10 @@ public class SignUpServlet extends HttpServlet {
 
         var user = createUserRequestConverter.convert(userRequest);
 
-        try {
-            var createdUser = userService.create(user);
-            var userDto = userDtoConverter.convert(createdUser);
+        var createdUser = userService.create(user);
+        var userDto = userDtoConverter.convert(createdUser);
 
-            request.setAttribute(ResponseJsonSerializerFilter.POJO_RESPONSE_BODY, userDto);
-        } catch (DuplicateUserException e) {
-            handleError(request, response, e);
-        }
-    }
+        request.setAttribute(ResponseJsonSerializerFilter.POJO_RESPONSE_BODY, userDto);
 
-    private void handleError(HttpServletRequest request, HttpServletResponse response,
-                                    DuplicateUserException e) {
-        response.setStatus(409);
-
-        var errorMessage = Map.of("errorData", e.getMessage());
-        request.setAttribute(ResponseJsonSerializerFilter.POJO_RESPONSE_BODY, errorMessage);
     }
 }

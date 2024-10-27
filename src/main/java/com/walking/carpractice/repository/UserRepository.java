@@ -2,6 +2,7 @@ package com.walking.carpractice.repository;
 
 import com.walking.carpractice.converter.db.UserConverter;
 import com.walking.carpractice.domain.User;
+import com.walking.carpractice.exception.DataAccessException;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -23,7 +24,7 @@ public class UserRepository {
         try (Connection connection = datasource.getConnection()) {
             return findByUsername(username, connection);
         } catch (SQLException e) {
-            throw new RuntimeException("Ошибка при получении пользователя", e);
+            throw new DataAccessException("Ошибка при получении пользователя", e);
         }
     }
 
@@ -37,7 +38,7 @@ public class UserRepository {
 
             return converter.convert(result);
         } catch (SQLException e) {
-            throw new RuntimeException("Ошибка при получении пользователя", e);
+            throw new DataAccessException("Ошибка при получении пользователя", e);
         }
     }
 
@@ -45,7 +46,7 @@ public class UserRepository {
         try (Connection connection = datasource.getConnection()) {
             return create(user, connection);
         } catch (SQLException e) {
-            throw new RuntimeException("Ошибка при создании пользователя", e);
+            throw new DataAccessException("Ошибка при создании пользователя", e);
         }
     }
 
@@ -66,7 +67,7 @@ public class UserRepository {
 
             return user;
         } catch (SQLException e) {
-            throw new RuntimeException("Ошибка при создании пользователя", e);
+            throw new DataAccessException("Ошибка при создании пользователя", e);
         }
     }
 

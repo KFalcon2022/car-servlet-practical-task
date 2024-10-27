@@ -1,9 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ page session="false" %>
 <html>
-<head>
-    <title>Login form</title>
-</head>
+    <head>
+        <title>Login form</title>
+    </head>
 <body>
 <%
     if (response.getStatus() == 401) {

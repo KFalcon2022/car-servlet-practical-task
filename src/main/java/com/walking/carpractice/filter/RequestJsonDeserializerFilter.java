@@ -6,6 +6,7 @@ import com.walking.carpractice.constant.ContextAttributeNames;
 import com.walking.carpractice.model.car.request.CreateCarRequest;
 import com.walking.carpractice.model.car.request.UpdateCarRequest;
 import com.walking.carpractice.model.user.request.CreateUserRequest;
+import com.walking.carpractice.servlet.ErrorHandlingServlet;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpFilter;
@@ -49,8 +50,17 @@ public class RequestJsonDeserializerFilter extends HttpFilter {
 
             request.setAttribute(POJO_REQUEST_BODY, pojoBody);
         } catch (IOException e) {
-            log.error("Ошибка десериализации тела запроса", e);
-            throw e;
+//            Фильтры предоставляют сквозную функциональность и обычно конкретный фильтр не имеет аналогов
+//            или однотипной с ним функциональности. В силу этого можно позволить себе подстроить информацию,
+//            передаваемую в глобальный обработчик. Делать так в коде сервлета или, тем более, сервиса не стоит
+            request.setAttribute(ErrorHandlingServlet.STATUS_CODE_ATTRIBUTE_KEY,
+                    400);
+            request.setAttribute(ErrorHandlingServlet.ERROR_MESSAGE_ATTRIBUTE_KEY,
+                    "Ошибка десериализации тела запроса");
+
+            request.getRequestDispatcher("/error").forward(request, response);
+
+            return;
         }
 
         chain.doFilter(request, response);

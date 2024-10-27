@@ -9,6 +9,7 @@ import com.walking.carpractice.converter.dto.car.request.CreateCarRequestConvert
 import com.walking.carpractice.converter.dto.user.UserDtoConverter;
 import com.walking.carpractice.converter.dto.user.request.CreateUserRequestConverter;
 import com.walking.carpractice.converter.dto.car.request.UpdateCarRequestConverter;
+import com.walking.carpractice.exception.CommonAppException;
 import com.walking.carpractice.repository.CarRepository;
 import com.walking.carpractice.repository.UserRepository;
 import com.walking.carpractice.service.CarService;
@@ -97,7 +98,7 @@ public class AddAttributesContextListener implements ServletContextListener {
         } catch (IOException e) {
             log.error("Невозможно загрузить конфигурацию для HikariCP", e);
 
-            throw new RuntimeException(e);
+            throw new CommonAppException(e);
         }
     }
 }

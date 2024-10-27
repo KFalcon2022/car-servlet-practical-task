@@ -1,6 +1,7 @@
 package com.walking.carpractice.service;
 
 import com.walking.carpractice.domain.Car;
+import com.walking.carpractice.exception.ObjectNotFoundException;
 import com.walking.carpractice.repository.CarRepository;
 
 public class CarService {
@@ -12,7 +13,7 @@ public class CarService {
 
     public Car getById(Long id) {
         return carRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Машина с id '%d' не существует".formatted(id)));
+                .orElseThrow(() -> new ObjectNotFoundException("Машина с id '%d' не существует".formatted(id)));
     }
 
     public Car create(Car car) {

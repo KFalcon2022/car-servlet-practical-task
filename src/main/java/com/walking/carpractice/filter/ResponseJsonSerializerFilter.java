@@ -2,20 +2,17 @@ package com.walking.carpractice.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.walking.carpractice.constant.ContextAttributeNames;
+import com.walking.carpractice.exception.CommonAppException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
 public class ResponseJsonSerializerFilter extends HttpFilter {
     public static final String POJO_RESPONSE_BODY = "pojoResponseBody";
-
-    private static final Logger log = LogManager.getLogger(ResponseJsonSerializerFilter.class);
 
     private ObjectMapper objectMapper;
 
@@ -41,8 +38,7 @@ public class ResponseJsonSerializerFilter extends HttpFilter {
 
             response.setContentType("application/json");
         } catch (IOException e) {
-            log.error("Ошибка формирования тела ответа", e);
-            throw e;
+            throw new CommonAppException("Ошибка формирования тела ответа", e);
         }
     }
 }
